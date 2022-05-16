@@ -2,6 +2,9 @@
 const wrapper = document.querySelector('.wrapper');
 const headerMenuLinks = ['Sign in', 'My Account', 'Order Status', 'Help'];
 const fragment = document.createDocumentFragment();
+const asideCategoriesList_1 = ['Science', 'Fantasy', 'Mystery', 'Horror', 'Romance', 'Poetry', 'Crime', 'Children', 'Literature'];
+const asideCategoriesList_2 = ['Cook', 'Photography', 'Comic', 'Business', 'Computer', 'History', 'Psychology', 'Art', 'Medical'];
+const asideCategoriesList_3 = ['Science', 'Sex', 'Baby', 'Sports', 'Travel'];
 
 // helper functions 
 function createElement(name) {
@@ -30,6 +33,44 @@ function createMenu(itemsContent) {
 }
 
 
+function createCardItem(classNameImg, classNameLi, classNameBtn, src, alt, h4_class, h4_text, price, classNameP) {
+    const li = createElement('li');
+    addClass(li, classNameLi);
+    const img = createElement('img');
+    addClass(img, classNameImg);
+    img.setAttribute('src', src);
+    img.setAttribute('alt', alt);
+
+    const button = createElement('button');
+    addClass(button, classNameBtn);
+    button.textContent = 'Add to cart';
+
+    const h4 = createElement('h4');
+    addClass(h4, h4_class);
+   
+
+    const a = createElement('a');
+    addClass(a, `${h4_class}-link`);
+    a.setAttribute('href', '#');
+    a.textContent = h4_text;
+
+    h4.append(a);
+
+    const p = createElement('p');
+    addClass(p, classNameP);
+    p.textContent = `price: ${price}$`
+
+    li.append(img);
+    li.append(h4);
+    li.append(p);
+    li.append(button);
+
+    return li;
+}
+
+// ===================================
+
+
 // create header top function
 function createHeader() {
     const header = createElement('header');
@@ -50,6 +91,7 @@ function createHeader() {
 
     return header;
 }
+
 // create header main
 function createHeaderMain() {
     const headerMain = createElement('div');
@@ -141,8 +183,96 @@ function createHeaderMain() {
     return headerMain;
 }
 
+// create main section
+async function createMain() {
+    const arr = await fetch('../../books.json').then(response => response.json()).then(response => response);
+    const main = createElement('main');
+    addClass(main, 'main');
+
+    const container = createElement('div');
+    addClass(container, 'container');
+
+    // create main-aside section
+    const mainAside = createElement('aside');
+    addClass(mainAside, 'main-aside');
+
+    const h2_1 = createElement('h2');
+    addClass(h2_1, 'main-aside__title');
+    h2_1.textContent = 'Categories';
+
+    const h3_1 = createElement('h3');
+    addClass(h3_1, 'main-aside__category');
+    h3_1.textContent = 'Fiction & Literature';
+
+    const h3_2 = createElement('h3');
+    addClass(h3_2, 'main-aside__category');
+    h3_2.textContent = 'Non - Fiction';
+
+    const h3_3 = createElement('h3');
+    addClass(h3_3, 'main-aside__category');
+    h3_3.textContent = 'Other';
+
+    const ulFL = createMenu(asideCategoriesList_1);
+    addClass(ulFL, 'menu');
+
+    const ulNF = createMenu(asideCategoriesList_2);
+    addClass(ulNF, 'menu');
+
+    const ulO = createMenu(asideCategoriesList_3);
+    addClass(ulO, 'menu');
+    // ============================
+
+    // create main-content section
+    const mainContent = createElement('section');
+    addClass(mainContent, 'main-content');
+
+    const h2_2 = createElement('h2');
+    addClass(h2_2, 'main-content__title');
+    h2_2.textContent = 'Science Fiction';
+
+    const ul = createElement('ul');
+    addClass(ul, 'main-content__books');
+    // ============================
+    for(let i = 0; i < arr.length; i++) {
+        ul.append(createCardItem(
+            'main-content__books-item__img', 
+            'main-content__books-item', 
+            'main-content__books-item__btn', 
+            arr[i].imageLink, 
+            'book poster', 
+            'main-content__books-item__title', 
+            arr[i].title, 
+            arr[i].price, 
+            'main-content__books-item__price'
+            ))
+           
+    }
+
+
+    main.append(container);
+    mainAside.append(h2_1);
+    mainAside.append(h3_1);
+    mainAside.append(ulFL);
+    mainAside.append(h3_2);
+    mainAside.append(ulNF);
+    mainAside.append(h3_3);
+    mainAside.append(ulO);
+
+    mainContent.append(h2_2);
+    mainContent.append(ul);
+    container.append(mainAside);
+    container.append(mainContent);
+
+    return main;
+}
+
+
+
+
 async function createHtmlStructure() {
     fragment.appendChild(await createHeader());
+    wrapper.append(fragment)
+    fragment.appendChild(await createMain());
     wrapper.append(fragment)
 }
 
