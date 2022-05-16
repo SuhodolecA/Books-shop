@@ -1,0 +1,168 @@
+:root {
+    box-sizing: border-box;
+    font-size: 100%;
+}
+
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* common styles */
+ul {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	display: inline-block;
+}
+
+.container {
+	max-width: 65.875rem;
+	margin: 0 auto;
+	padding: 0 0.9375rem;
+}
+
+
+body {
+    font-family: 'Open Sans', sans-serif;
+	font-size: 0.8125rem;
+	line-height: 1.5; 
+}
+
+/* === header === */
+.nav {
+    background-color: hsl(0, 0%, 26%);
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu-item + .menu-item {
+    margin-left: 1.25rem;
+}
+
+.menu-item__link {
+    color: hsl(0, 0%, 100%);
+    font-size: 1rem;
+    line-height: 1.625;
+    transition: color .2s ease-in-out;
+}
+
+.menu-item__link:hover {
+    color: hsl(102, 35%, 54%);
+}
+
+.header-main {
+    background-color: hsl(0, 0%, 97%);
+}
+
+.header-main > .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-main__logo {
+    max-width: 9.375rem;
+}
+
+.header-main__logo-img {
+    width: 100%;
+}
+
+.searchBar {
+    background-color: hsl(102, 35%, 54%);
+    max-width: 25.875rem;
+    width: 100%;
+    height: 2.5rem;
+    border-radius: .3125rem;
+    display: flex;
+    align-items: center;
+    padding: .1875rem 0 .1875rem .1875rem;
+}
+
+
+.searchBar-input {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.25rem;
+    border: 0;
+    padding: .3125rem;
+}
+
+
+.search-btn {
+    height: 100%;
+    background-color: transparent;
+    border: 0;
+    padding: .1875rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: hsl(0, 0%, 100%);
+    letter-spacing: 1px;
+    font-size: 1.125rem;
+    transition: color .2s ease-in-out, text-shadow .2s ease-in-out;
+}
+
+.search-btn:hover {
+    color: hsl(112, 55%, 74%);
+    text-shadow: 2px 0px hsla(0, 0%, 0%, .5);
+}
+
+.header-main__basket {
+    position: relative;
+    padding: 0.3125rem;
+    min-width: 4.375rem;
+    text-align: center;
+}
+
+.header-main__basket-icon {
+    font-size: 1.875rem;
+    color: hsl(102, 35%, 54%);
+    transition: color .2s ease-in-out;
+    padding: 0.3125rem;
+}
+
+.header-main__basket-icon:hover {
+    color: hsl(112, 55%, 74%);
+}
+
+.header-main__basket-amount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    color: hsl(0, 0%, 100%);
+    font-size: 0.625rem;
+    font-weight: 500;
+    border-radius: 50%;
+    background-color: hsl(112, 55%, 74%);
+    width: 1.25rem;
+    height: 1.25rem;
+    position: absolute;
+    top: 0.9rem;
+    left: 2.7rem;
+}
+
+.header-main__basket-cost__currency {
+    font-weight: 700;
+    color: hsl(0, 0%, 43%);
+}
+
+.header-main__basket-cost__input {
+    display: inline-block;
+    font-weight: 700;
+    color: hsl(0, 0%, 43%);
+}
+/* === / header === */
