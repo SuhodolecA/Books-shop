@@ -1,5 +1,6 @@
 // common variables
 const wrapper = document.querySelector('.wrapper');
+const cartWrapper = document.querySelector('.cart-wrapper');
 const headerMenuLinks = ['Sign in', 'My Account', 'Order Status', 'Help'];
 const fragment = document.createDocumentFragment();
 const asideCategoriesList_1 = ['Science', 'Fantasy', 'Mystery', 'Horror', 'Romance', 'Poetry', 'Crime', 'Children', 'Literature'];
@@ -145,7 +146,7 @@ function createHeaderMain() {
     addClass(headerMainBasketIcon, 'header-main__basket-icon');
     addClass(headerMainBasketIcon, 'fas');
     addClass(headerMainBasketIcon, 'fa-shopping-basket');
-    headerMainBasketIcon.setAttribute('href', '#');
+    headerMainBasketIcon.setAttribute('href', '../cart/cart.html');
 
     const headerMainBasketAmount = createElement('div');
     addClass(headerMainBasketAmount, 'header-main__basket-amount');
@@ -323,6 +324,29 @@ function createFooter() {
     return footer;
 }
 
+// ================= cart page =========================
+function createCartHeader() {
+    const header = createElement('header');
+    addClass(header, 'cart-header');
+    const container = createElement('div');
+    addClass(container, 'container');
+    const menu =  createMenu(headerMenuLinks);
+    addClass(menu, 'cart-menu');
+    const nav = createElement('nav');
+    addClass(nav, 'cart-nav');
+    container.append(menu)
+    nav.append(container)
+   
+    header.append(nav)
+
+    fragment.appendChild(createHeaderMain());
+    header.append(fragment)
+
+    return header;
+}
+
+
+// ================= / cart page =========================
 
 
 

@@ -24,7 +24,7 @@ a {
 }
 
 .container {
-	max-width: 65.875rem;
+	max-width: 81.875rem;
 	margin: 0 auto;
 	padding: 0 0.9375rem;
 }
@@ -271,3 +271,19 @@ body {
     margin-left: 0.3125rem;
 }
 /* === / footer === */
+
+/* ====== cart page styles */
+.cart-header {
+    background-color: hsl(0, 0%, 26%);
+}
+
+.cart-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-menu {
+    display: flex;
+}
+/* ====== / cart page styles */
