@@ -248,3 +248,26 @@ body {
     padding: 0 0.3125rem;
 }
 /* === / main content === */
+
+/* === footer === */
+.footer {
+    background-color: hsl(120, 5%, 25%);
+    color: hsl(0, 0%, 83%);
+    padding: 0.3125rem 0;
+    text-align: center;
+}
+
+.footer-link {
+    color: hsl(0, 0%, 63%);
+    transition: color .2s ease-in-out;
+}
+
+.footer-link:hover {
+    color: hsl(0, 0%, 93%);
+}
+
+.footer-logo {
+    width: 3.125rem;
+    margin-left: 0.3125rem;
+}
+/* === / footer === */
