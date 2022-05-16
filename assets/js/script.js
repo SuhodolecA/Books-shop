@@ -266,6 +266,63 @@ async function createMain() {
     return main;
 }
 
+// create footer
+function createFooter() {
+    const footer = createElement('footer');
+    addClass(footer, 'footer');
+
+    const container = createElement('div');
+    addClass(container, 'container');
+
+    const text_1 = createElement('span');
+    addClass(text_1, 'footer-text');
+    text_1.textContent = 'Challenge by';
+
+    const a_1 = createElement('a');
+    addClass(a_1, 'footer-link');
+    a_1.setAttribute(
+        'href', 
+        `https://github.com/rolling-scopes-school/js-fe-course-en/blob/main/tasks/books-shop/books-shop.md`
+    );
+    a_1.setAttribute(
+        'target', 
+        `_blank`
+    );
+
+    const footerLogo = createElement('img');
+    addClass(footerLogo, 'footer-logo');
+    footerLogo.setAttribute('src', '/assets/images/footer-logo.png');
+    footerLogo.setAttribute('alt', 'logo');
+
+    a_1.append(footerLogo);
+
+    const text_2 = createElement('span');
+    addClass(text_2, 'footer-text');
+    text_2.textContent = '.Coded by ';
+
+    const a_2 = createElement('a');
+    addClass(a_2, 'footer-link');
+    a_2.setAttribute(
+        'href', 
+        `https://github.com/SuhodolecA`
+    );
+    a_2.setAttribute(
+        'target', 
+        `_blank`
+    );
+    a_2.textContent = "Anton Sukhadolets";
+
+        
+    container.append(text_1);
+    container.append(a_1);
+    container.append(text_2);
+    container.append(a_2);
+
+    footer.append(container);
+
+    return footer;
+}
+
 
 
 
@@ -273,6 +330,8 @@ async function createHtmlStructure() {
     fragment.appendChild(await createHeader());
     wrapper.append(fragment)
     fragment.appendChild(await createMain());
+    wrapper.append(fragment)
+    fragment.appendChild(await createFooter());
     wrapper.append(fragment)
 }
 
