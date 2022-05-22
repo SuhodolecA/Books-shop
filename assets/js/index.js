@@ -5,7 +5,7 @@ let cartSumItem;
 // let cartCounterItem;
 let books = fetch("../../books.json")
   .then((response) => response.json())
-  .then((response) => books = response)
+  .then((response) => (books = response))
   .finally(() => {
     createHtmlStructure();
     cartSumItem = document.querySelector(".header-main__basket-cost__input");
@@ -40,6 +40,20 @@ const asideCategoriesList_2 = [
 ];
 
 // === helper functions
+function stringOnly(e) {
+  if(!/[a-z]/i.test(e.key)) {
+    e.preventDefault();
+  }
+}
+
+function validCharAmount(e, num) {
+  const length = e.target.value.length;
+  if(length < num) {
+    e.target.closest('.delivery-item').classList.add('error');
+  } else {
+    e.target.closest('.delivery-item').classList.remove('error');
+  }
+}
 function setDescriptionData(element, descr) {
   const id = element.dataset.bookId;
   const img = descr.querySelector(".book-description__cover");
@@ -54,24 +68,32 @@ function setDescriptionData(element, descr) {
 }
 
 function updateCartSum() {
-  const cartSumItem = document.querySelector(".header-main__basket-cost__input");
+  const cartSumItem = document.querySelector(
+    ".header-main__basket-cost__input"
+  );
   cartSum = purchases.reduce((acc, item) => acc + item.price, 0);
   cartSumItem.textContent = cartSum;
 }
 
 function updateCartCounter() {
   const cartCounterItem = document.querySelector(".header-main__basket-amount");
-  console.log('purchases.length', purchases.length)
-  console.log('cartCounterItem', cartCounterItem)
-   
-  console.log('cartCounterItem.textContent = purchases.length', cartCounterItem.textContent = purchases.length) 
+  console.log("purchases.length", purchases.length);
+  console.log("cartCounterItem", cartCounterItem);
+
+  console.log(
+    "cartCounterItem.textContent = purchases.length",
+    (cartCounterItem.textContent = purchases.length)
+  );
   cartCounterItem.textContent = purchases.length;
-  console.log('cartCounterItem.textContent', cartCounterItem.textContent)
+  console.log("cartCounterItem.textContent", cartCounterItem.textContent);
 }
 function addToCart(e) {
   const id = e.target.closest(".main-content__books-item").dataset.bookId;
-  console.log('id', id)
-  console.log('purchases.includes(books.filter((book) => book.id == id)[0])', !purchases.includes(books.filter((book) => book.id == id)[0]))
+  console.log("id", id);
+  console.log(
+    "purchases.includes(books.filter((book) => book.id == id)[0])",
+    !purchases.includes(books.filter((book) => book.id == id)[0])
+  );
   if (!purchases.includes(books.filter((book) => book.id == id)[0])) {
     purchases.push(books.filter((book) => book.id == id)[0]);
     updateCartCounter();
@@ -118,6 +140,15 @@ function showDescription(e) {
   setDescriptionData(item, description);
   overlay.classList.add("show");
   description.classList.add("show");
+}
+
+function showForm() {
+  if(purchases.length != 0) {
+    const form = document.querySelector(".delivery"); 
+    const overlay = document.querySelector(".overlay");
+    overlay.classList.add("show");
+    form.classList.add("show");
+  }
 }
 
 function createCardItem(
@@ -200,7 +231,7 @@ function createCartHeader() {
   const headerMainLogo = createElement("a");
   addClass(headerMainLogo, "header-main__logo");
   headerMainLogo.setAttribute("href", "#");
-  headerMainLogo.addEventListener('click', createHtmlStructure);
+  headerMainLogo.addEventListener("click", createHtmlStructure);
 
   const headerLogoImg = createElement("img");
   addClass(headerLogoImg, "header-main__logo-img");
@@ -334,7 +365,7 @@ function createHeaderMain() {
   addClass(headerMainBasketIcon, "fas");
   addClass(headerMainBasketIcon, "fa-shopping-basket");
   headerMainBasketIcon.setAttribute("href", "#");
-  headerMainBasketIcon.addEventListener('click', createHtmlCardStructure)
+  headerMainBasketIcon.addEventListener("click", createHtmlCardStructure);
 
   const headerMainBasketAmount = createElement("div");
   addClass(headerMainBasketAmount, "header-main__basket-amount");
@@ -376,6 +407,13 @@ function closeDescription(e) {
   const description = document.querySelector(".book-description");
   overlay.classList.remove("show");
   description.classList.remove("show");
+}
+
+function closeForm(e) {
+  const overlay = document.querySelector(".overlay");
+  const delivery = document.querySelector(".delivery");
+  overlay.classList.remove("show");
+  delivery.classList.remove("show");
 }
 
 function createBookDesc() {
@@ -511,8 +549,161 @@ function createMain() {
 createMain(books);
 
 // create order form
-// const orderForm = createElement("form");
-// addClass(ul, "main-content__books");
+function createForm() {
+  const form = createElement("form");
+  addClass(form, "delivery");
+  form.setAttribute('action', '#')
+
+  const closeBtn = createElement("button");
+  addClass(closeBtn, "delivery-close");
+  closeBtn.setAttribute("type", "button");
+  closeBtn.textContent = "Close";
+  closeBtn.addEventListener("click", closeForm);
+
+  const formNameContainer = createElement("div");
+  addClass(formNameContainer, "delivery-name");
+  addClass(formNameContainer, "delivery-item");
+
+  const formName = createElement("input");
+  addClass(formName, "delivery-name__input");
+  formName.setAttribute('type', 'text');
+  formName.setAttribute('id', 'name');
+  formName.setAttribute('name', 'name');
+  formName.setAttribute('placeholder', 'Enter your name');
+  formName.setAttribute('required', 'true');
+  formName.addEventListener('keydown', stringOnly)
+  formName.addEventListener('keyup', (e) => {
+    validCharAmount(e,4)
+  })
+  formNameContainer.append(formName);
+
+  const formSurnameContainer = createElement("div");
+  addClass(formSurnameContainer, "delivery-surname");
+  addClass(formSurnameContainer, "delivery-item");
+
+  const formSurname = createElement("input");
+  addClass(formSurname, "delivery-surname__input");
+  formSurname.setAttribute('type', 'text');
+  formSurname.setAttribute('id', 'surname');
+  formSurname.setAttribute('name', 'surname');
+  formSurname.setAttribute('placeholder', 'Enter your surname');
+  formSurname.setAttribute('required', 'true');
+  formSurnameContainer.append(formSurname);
+
+  const formDateContainer = createElement("div");
+  addClass(formDateContainer, "delivery-date");
+  addClass(formDateContainer, "delivery-item");
+
+  const formDateLabel = createElement("label");
+  addClass(formDateLabel, "delivery-date__label");
+  formDateLabel.setAttribute('for', 'date');
+  formDateLabel.textContent = 'Delivery date';
+
+  const formDate = createElement("input");
+  addClass(formDate, "delivery-date__input");
+  formDate.setAttribute('type', 'date');
+  formDate.setAttribute('id', 'date');
+  formDate.setAttribute('name', 'date');
+  formDate.setAttribute('required', 'true');
+  formDateContainer.append(formDateLabel);
+  formDateContainer.append(formDate);
+
+  const formStreetContainer = createElement("div");
+  addClass(formStreetContainer, "delivery-street");
+  addClass(formStreetContainer, "delivery-item");
+
+  const formStreet = createElement("input");
+  addClass(formStreet, "delivery-street__input");
+  formStreet.setAttribute('type', 'text');
+  formStreet.setAttribute('id', 'street');
+  formStreet.setAttribute('name', 'street');
+  formStreet.setAttribute('placeholder', 'Enter your street');
+  formStreet.setAttribute('required', 'true');
+  formStreetContainer.append(formStreet);
+
+  const formHouseContainer = createElement("div");
+  addClass(formHouseContainer, "delivery-house");
+  addClass(formHouseContainer, "delivery-item");
+
+  const formHouse = createElement("input");
+  addClass(formHouse, "delivery-house__input");
+  formHouse.setAttribute('type', 'number');
+  formHouse.setAttribute('id', 'house');
+  formHouse.setAttribute('name', 'house');
+  formHouse.setAttribute('placeholder', 'Enter your house number');
+  formHouse.setAttribute('required', 'true');
+  formHouseContainer.append(formHouse);
+
+  const formFlatContainer = createElement("div");
+  addClass(formFlatContainer, "delivery-flat");
+  addClass(formFlatContainer, "delivery-item");
+
+  const formFlat = createElement("input");
+  addClass(formFlat, "delivery-flat__input");
+  formFlat.setAttribute('type', 'number');
+  formFlat.setAttribute('id', 'flat');
+  formFlat.setAttribute('name', 'flat');
+  formFlat.setAttribute('placeholder', 'Enter your flat number');
+  formFlat.setAttribute('required', 'true');
+  formFlatContainer.append(formFlat);
+
+  const formPaymentContainer = createElement("div");
+  addClass(formPaymentContainer, "delivery-payment");
+  addClass(formPaymentContainer, "delivery-item");
+
+
+  const formPaymentCardLabel = createElement("label");
+  addClass(formPaymentCardLabel, "delivery-payment__label");
+  formPaymentCardLabel.setAttribute('for', 'card');
+  formPaymentCardLabel.textContent = 'Card:';
+
+  const formPaymentCard = createElement("input");
+  addClass(formPaymentCard, "delivery-payment__input");
+  formPaymentCard.setAttribute('type', 'radio');
+  formPaymentCard.setAttribute('id', 'card');
+  formPaymentCard.setAttribute('name', 'payment');
+  formPaymentCard.setAttribute('required', 'true');
+
+  const formPaymentCashLabel = createElement("label");
+  addClass(formPaymentCashLabel, "delivery-payment__label");
+  formPaymentCashLabel.setAttribute('for', 'cash');
+  formPaymentCashLabel.textContent = 'Cash:';
+
+  const formPaymentCash = createElement("input");
+  addClass(formPaymentCash, "delivery-payment__input");
+  formPaymentCash.setAttribute('type', 'radio');
+  formPaymentCash.setAttribute('id', 'cash');
+  formPaymentCash.setAttribute('name', 'payment');
+  formPaymentCash.setAttribute('required', 'true');
+  formPaymentContainer.append(formPaymentCardLabel);
+  formPaymentContainer.append(formPaymentCard);
+  formPaymentContainer.append(formPaymentCashLabel);
+  formPaymentContainer.append(formPaymentCash);
+
+  const submitBtn = createElement("button");
+  addClass(submitBtn, 'delivery-submit');
+  submitBtn.setAttribute('type', 'submit')
+  submitBtn.textContent = 'Submit';
+
+  form.append(closeBtn);
+  form.append(formNameContainer);
+  form.append(formSurnameContainer);
+  form.append(formDateContainer);
+  form.append(formStreetContainer);
+  form.append(formHouseContainer);
+  form.append(formFlatContainer);
+  form.append(formPaymentContainer);
+  form.append(submitBtn);
+
+  return form;
+
+}
+
+{
+  /* <form class="delivery" action="#" method="get">
+  
+  <button type="submit">Complete</button>
+</form>; */}
 
 // ======== Basket ======
 function createCardItemBasket(
@@ -573,9 +764,9 @@ function createCartMain(arr) {
 
   const ul = createElement("ul");
   addClass(ul, "cart-main__list");
-  console.log('arr', arr)
+  console.log("arr", arr);
   // ============================
-  if(arr) {
+  if (arr) {
     for (let i = 0; i < arr.length; i++) {
       ul.append(
         createCardItemBasket(
@@ -598,7 +789,7 @@ function createCartMain(arr) {
   addClass(totalSumContainer, "cart-main__sum");
   const totalSumContainerCur = createElement("span");
   addClass(totalSumContainerCur, "cart-main__sum-cur");
-  totalSumContainerCur.textContent = 'Total sum: $';
+  totalSumContainerCur.textContent = "Total sum: $";
   const totalSumContainerAmount = createElement("span");
   addClass(totalSumContainerAmount, "cart-main__sum-amount");
   totalSumContainerAmount.textContent = cartSum;
@@ -607,9 +798,8 @@ function createCartMain(arr) {
 
   const confirmBtn = createElement("button");
   addClass(confirmBtn, "cart-main__confirm");
-  // buttonAdd.addEventListener("click", addToCart);
-  confirmBtn.textContent = 'Confirm';
- 
+  confirmBtn.addEventListener("click", showForm);
+  confirmBtn.textContent = "Confirm";
 
   container.append(h2);
   container.append(ul);
@@ -620,13 +810,14 @@ function createCartMain(arr) {
   return main;
 }
 
-
 function createHtmlCardStructure() {
   const fragment = document.createDocumentFragment();
+  fragment.appendChild(createOverlay());
+  fragment.appendChild(createForm());
   fragment.appendChild(createCartHeader());
   fragment.appendChild(createCartMain(purchases));
   fragment.appendChild(createFooter());
-  wrapper.innerHTML = '';
+  wrapper.innerHTML = "";
   wrapper.append(fragment);
 }
 
@@ -639,7 +830,7 @@ function createHtmlStructure() {
   fragment.appendChild(createBookDesc());
   fragment.appendChild(createMain(books));
   fragment.appendChild(createFooter());
-  wrapper.innerHTML = '';
+  wrapper.innerHTML = "";
   wrapper.append(fragment);
 }
 

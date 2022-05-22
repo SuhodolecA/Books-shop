@@ -38,6 +38,7 @@ body {
 
 .wrapper {
     position: relative;
+    min-height: 100vh;
 }
 
 .overlay {
@@ -328,7 +329,8 @@ body {
 /* ====== / cart page styles */
 
 /* ======  book description */
-.book-description {
+.book-description,
+.delivery {
     /* border: 1px solid #dfdfdf; */
     border-radius: 8px;
     padding: 1.5625rem;
@@ -346,7 +348,8 @@ body {
     display: none;
 }
 
-.book-description.show {
+.book-description.show,
+.delivery.show {
     display: flex;
 }
 
@@ -368,3 +371,30 @@ body {
     text-align: justify;
 }
 /* ====== / book description */
+
+/* ======  book delivery form */
+.delivery {
+    flex-direction: column;
+}
+
+.delivery-item {
+    padding-bottom: 0.9375rem;
+    display: inline-block;
+    position: relative;
+}
+
+.delivery-item:after {
+    content: 'The field is invalid';
+    position: absolute;
+    display: block;
+    bottom: 0;
+    font-size: 0.6875rem;
+    color: transparent;
+    font-weight: 700;
+    left: 5rem;
+}
+
+.delivery-item.error:after {
+    color: hsl(0, 100%, 50%);
+}
+/* ======  / book delivery form */
