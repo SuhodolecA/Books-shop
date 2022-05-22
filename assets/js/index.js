@@ -282,7 +282,7 @@ function createFooter() {
 
   const footerLogo = createElement("img");
   addClass(footerLogo, "footer-logo");
-  footerLogo.setAttribute("src", "/assets/images/footer-logo.png");
+  footerLogo.setAttribute("src", "../../assets/images/footer-logo.png");
   footerLogo.setAttribute("alt", "logo");
 
   a_1.append(footerLogo);
