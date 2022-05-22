@@ -397,4 +397,9 @@ body {
 .delivery-item.error:after {
     color: hsl(0, 100%, 50%);
 }
+
+.delivery-house__input::-webkit-inner-spin-button,
+.delivery-flat__input::-webkit-inner-spin-button {
+    display: none;
+}
 /* ======  / book delivery form */

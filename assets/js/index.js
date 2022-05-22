@@ -40,6 +40,15 @@ const asideCategoriesList_2 = [
 ];
 
 // === helper functions
+function validDate() {
+  const today = new Date();
+  console.log('today',today)
+  const tomorrow =  new Date()
+  tomorrow.setDate(today.getDate() + 1)
+  tomorrow.toISOString().split('T')[0]
+  return tomorrow.toISOString().split('T')[0];
+}
+
 function stringOnly(e) {
   if(!/[a-z]/i.test(e.key)) {
     e.preventDefault();
@@ -48,12 +57,15 @@ function stringOnly(e) {
 
 function validCharAmount(e, num) {
   const length = e.target.value.length;
+  console.log('length', length)
   if(length < num) {
+    console.log('length < num', length < num)
     e.target.closest('.delivery-item').classList.add('error');
   } else {
     e.target.closest('.delivery-item').classList.remove('error');
   }
 }
+
 function setDescriptionData(element, descr) {
   const id = element.dataset.bookId;
   const img = descr.querySelector(".book-description__cover");
@@ -580,6 +592,7 @@ function createForm() {
   const formSurnameContainer = createElement("div");
   addClass(formSurnameContainer, "delivery-surname");
   addClass(formSurnameContainer, "delivery-item");
+  
 
   const formSurname = createElement("input");
   addClass(formSurname, "delivery-surname__input");
@@ -588,11 +601,18 @@ function createForm() {
   formSurname.setAttribute('name', 'surname');
   formSurname.setAttribute('placeholder', 'Enter your surname');
   formSurname.setAttribute('required', 'true');
+  formSurname.addEventListener('keydown', stringOnly)
+  formSurname.addEventListener('keyup', (e) => {
+    validCharAmount(e,5)
+  })
+  
   formSurnameContainer.append(formSurname);
 
+  
   const formDateContainer = createElement("div");
   addClass(formDateContainer, "delivery-date");
   addClass(formDateContainer, "delivery-item");
+
 
   const formDateLabel = createElement("label");
   addClass(formDateLabel, "delivery-date__label");
@@ -605,6 +625,7 @@ function createForm() {
   formDate.setAttribute('id', 'date');
   formDate.setAttribute('name', 'date');
   formDate.setAttribute('required', 'true');
+  formDate.setAttribute('min', validDate());
   formDateContainer.append(formDateLabel);
   formDateContainer.append(formDate);
 
@@ -619,6 +640,10 @@ function createForm() {
   formStreet.setAttribute('name', 'street');
   formStreet.setAttribute('placeholder', 'Enter your street');
   formStreet.setAttribute('required', 'true');
+  formStreet.addEventListener('keyup', (e) => {
+    validCharAmount(e,5)
+  })
+
   formStreetContainer.append(formStreet);
 
   const formHouseContainer = createElement("div");
@@ -632,6 +657,12 @@ function createForm() {
   formHouse.setAttribute('name', 'house');
   formHouse.setAttribute('placeholder', 'Enter your house number');
   formHouse.setAttribute('required', 'true');
+  formHouse.setAttribute('min', 0);
+  formHouse.addEventListener('keydown', (e) => {
+    if(!(e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode == 8 || e.keyCode == 46)) {
+      e.preventDefault();
+    }
+  })
   formHouseContainer.append(formHouse);
 
   const formFlatContainer = createElement("div");
@@ -645,6 +676,7 @@ function createForm() {
   formFlat.setAttribute('name', 'flat');
   formFlat.setAttribute('placeholder', 'Enter your flat number');
   formFlat.setAttribute('required', 'true');
+  formFlat.setAttribute('min', 0);
   formFlatContainer.append(formFlat);
 
   const formPaymentContainer = createElement("div");
@@ -683,6 +715,7 @@ function createForm() {
   const submitBtn = createElement("button");
   addClass(submitBtn, 'delivery-submit');
   submitBtn.setAttribute('type', 'submit')
+  submitBtn.setAttribute('disabled', 'true')
   submitBtn.textContent = 'Submit';
 
   form.append(closeBtn);
