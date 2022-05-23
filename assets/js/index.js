@@ -40,13 +40,50 @@ const asideCategoriesList_2 = [
 ];
 
 // === helper functions
+function changeSubmitBtnState() {
+  const deliveryItem = document.querySelectorAll(".delivery-item");
+  const deliveryItemToArray = Array.from(deliveryItem);
+  const submitFormBtn = document.querySelector(".delivery-submit");
+  if (deliveryItemToArray.every((item) => item.classList.contains("valid"))) {
+    submitFormBtn.disabled = false;
+  } else {
+    submitFormBtn.disabled = true;
+  }
+  // console.log('deliveryItemToArray', deliveryItemToArray)
+  // console.log('Array.from(deliveryItem).every(item => console.log(item))', Array.from(deliveryItem).every(item => console.log(item)))
+  // console.log('Array.from(deliveryItem).every(item => console.log(item))', Array.from(deliveryItem).foeEach(item => console.log(item)))
+  // if(Array.from(deliveryItem).every(item => console.log(item))) {
+  //   submitFormBtn.disabled = false;
+  // } else {
+  //   submitFormBtn.disabled = true;
+  // }
+}
+
+
+function createSumInfo(e) {
+  e.preventDefault();
+  const name = document.querySelector('.delivery-name__input').value;
+  const surname = document.querySelector('.delivery-surname__input').value;
+  const date = document.querySelector('.delivery-date__input').value;
+  const street = document.querySelector('.delivery-street__input').value;
+  const house = document.querySelector('.delivery-house__input').value;
+  const flat = document.querySelector('.delivery-flat__input').value;
+  const payment = Array.from(document.querySelectorAll('.delivery-payment__input')).filter(item => item.checked)[0].value;
+  const delivery = document.querySelector('.delivery');
+  delivery.innerHTML = '';
+  delivery.innerText = `The order created. The delivery address is ${street} street house ${house} flat ${flat}. Customer ${name} ${surname}.`
+}
+
 function validDate(e) {
   const elem = e.target;
   if (!elem.value) {
+    e.target.closest(".delivery-item").classList.remove("valid");
     e.target.closest(".delivery-item").classList.add("error");
   } else {
     e.target.closest(".delivery-item").classList.remove("error");
+    e.target.closest(".delivery-item").classList.add("valid");
   }
+  changeSubmitBtnState();
 }
 function nextDate() {
   const today = new Date();
@@ -67,10 +104,13 @@ function validCharAmount(e, num) {
   const elem = e.target;
   if (length < num || elem === "") {
     console.log("length < num", length < num);
+    e.target.closest(".delivery-item").classList.remove("valid");
     e.target.closest(".delivery-item").classList.add("error");
   } else {
     e.target.closest(".delivery-item").classList.remove("error");
+    e.target.closest(".delivery-item").classList.add("valid");
   }
+  changeSubmitBtnState();
 }
 
 function setDescriptionData(element, descr) {
@@ -683,17 +723,23 @@ function createForm() {
     ) {
       e.preventDefault();
     } else if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.remove("valid");
       e.target.closest(".delivery-item").classList.add("error");
     } else {
+      e.target.closest(".delivery-item").classList.add("valid");
       e.target.closest(".delivery-item").classList.remove("error");
     }
+    changeSubmitBtnState();
   });
   formHouse.addEventListener("focusout", (e) => {
     if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.remove("valid");
       e.target.closest(".delivery-item").classList.add("error");
     } else {
+      e.target.closest(".delivery-item").classList.add("valid");
       e.target.closest(".delivery-item").classList.remove("error");
     }
+    changeSubmitBtnState();
   });
   formHouseContainer.append(formHouse);
 
@@ -711,23 +757,30 @@ function createForm() {
   formFlat.setAttribute("min", 0);
   formFlat.addEventListener("focusout", (e) => {
     if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.remove("valid");
       e.target.closest(".delivery-item").classList.add("error");
     } else {
+      e.target.closest(".delivery-item").classList.add("valid");
       e.target.closest(".delivery-item").classList.remove("error");
     }
+    changeSubmitBtnState();
   });
   formFlat.addEventListener("keyup", (e) => {
     if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.remove("valid");
       e.target.closest(".delivery-item").classList.add("error");
     } else {
+      e.target.closest(".delivery-item").classList.add("valid");
       e.target.closest(".delivery-item").classList.remove("error");
     }
+    changeSubmitBtnState();
   });
   formFlatContainer.append(formFlat);
 
   const formPaymentContainer = createElement("div");
   addClass(formPaymentContainer, "delivery-payment");
   addClass(formPaymentContainer, "delivery-item");
+  addClass(formPaymentContainer, "valid");
 
   const formPaymentCardLabel = createElement("label");
   addClass(formPaymentCardLabel, "delivery-payment__label");
@@ -741,10 +794,12 @@ function createForm() {
   formPaymentCard.setAttribute("name", "payment");
   formPaymentCard.setAttribute("required", "true");
   formPaymentCard.setAttribute("checked", "true");
+  formPaymentCard.setAttribute("value", "card");
 
   const formPaymentCashLabel = createElement("label");
   addClass(formPaymentCashLabel, "delivery-payment__label");
   formPaymentCashLabel.setAttribute("for", "cash");
+  formPaymentCashLabel.setAttribute("value", "cash");
   formPaymentCashLabel.textContent = "Cash:";
 
   const formPaymentCash = createElement("input");
@@ -753,6 +808,7 @@ function createForm() {
   formPaymentCash.setAttribute("id", "cash");
   formPaymentCash.setAttribute("name", "payment");
   formPaymentCash.setAttribute("required", "true");
+  formPaymentCash.setAttribute("value", "cash");
   formPaymentContainer.append(formPaymentCardLabel);
   formPaymentContainer.append(formPaymentCard);
   formPaymentContainer.append(formPaymentCashLabel);
@@ -762,7 +818,8 @@ function createForm() {
   addClass(submitBtn, "delivery-submit");
   submitBtn.setAttribute("type", "submit");
   submitBtn.setAttribute("disabled", "true");
-  submitBtn.textContent = "Submit";
+  submitBtn.textContent = "Submit"; //createSumInfo
+  submitBtn.addEventListener('click', createSumInfo)
 
   form.append(closeBtn);
   form.append(formNameContainer);
@@ -775,13 +832,6 @@ function createForm() {
   form.append(submitBtn);
 
   return form;
-}
-
-{
-  /* <form class="delivery" action="#" method="get">
-  
-  <button type="submit">Complete</button>
-</form>; */
 }
 
 // ======== Basket ======
