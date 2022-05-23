@@ -9,7 +9,6 @@ let books = fetch("../../books.json")
   .finally(() => {
     createHtmlStructure();
     cartSumItem = document.querySelector(".header-main__basket-cost__input");
-    // cartCounterItem = document.querySelector(".header-main__basket-amount");
   });
 const purchases = [];
 let cartSum = purchases.reduce((acc, item) => acc + item.price, 0) || 0;
@@ -49,14 +48,6 @@ function changeSubmitBtnState() {
   } else {
     submitFormBtn.disabled = true;
   }
-  // console.log('deliveryItemToArray', deliveryItemToArray)
-  // console.log('Array.from(deliveryItem).every(item => console.log(item))', Array.from(deliveryItem).every(item => console.log(item)))
-  // console.log('Array.from(deliveryItem).every(item => console.log(item))', Array.from(deliveryItem).foeEach(item => console.log(item)))
-  // if(Array.from(deliveryItem).every(item => console.log(item))) {
-  //   submitFormBtn.disabled = false;
-  // } else {
-  //   submitFormBtn.disabled = true;
-  // }
 }
 
 
@@ -64,13 +55,10 @@ function createSumInfo(e) {
   e.preventDefault();
   const name = document.querySelector('.delivery-name__input').value;
   const surname = document.querySelector('.delivery-surname__input').value;
-  const date = document.querySelector('.delivery-date__input').value;
   const street = document.querySelector('.delivery-street__input').value;
   const house = document.querySelector('.delivery-house__input').value;
   const flat = document.querySelector('.delivery-flat__input').value;
-  const payment = Array.from(document.querySelectorAll('.delivery-payment__input')).filter(item => item.checked)[0].value;
   const delivery = document.querySelector('.delivery');
-  delivery.innerHTML = '';
   delivery.innerText = `The order created. The delivery address is ${street} street house ${house} flat ${flat}. Customer ${name} ${surname}.`
 }
 
@@ -103,7 +91,6 @@ function validCharAmount(e, num) {
   const length = e.target.value.length;
   const elem = e.target;
   if (length < num || elem === "") {
-    console.log("length < num", length < num);
     e.target.closest(".delivery-item").classList.remove("valid");
     e.target.closest(".delivery-item").classList.add("error");
   } else {
@@ -136,23 +123,10 @@ function updateCartSum() {
 
 function updateCartCounter() {
   const cartCounterItem = document.querySelector(".header-main__basket-amount");
-  console.log("purchases.length", purchases.length);
-  console.log("cartCounterItem", cartCounterItem);
-
-  console.log(
-    "cartCounterItem.textContent = purchases.length",
-    (cartCounterItem.textContent = purchases.length)
-  );
   cartCounterItem.textContent = purchases.length;
-  console.log("cartCounterItem.textContent", cartCounterItem.textContent);
 }
 function addToCart(e) {
   const id = e.target.closest(".main-content__books-item").dataset.bookId;
-  console.log("id", id);
-  console.log(
-    "purchases.includes(books.filter((book) => book.id == id)[0])",
-    !purchases.includes(books.filter((book) => book.id == id)[0])
-  );
   if (!purchases.includes(books.filter((book) => book.id == id)[0])) {
     purchases.push(books.filter((book) => book.id == id)[0]);
     updateCartCounter();
@@ -515,9 +489,6 @@ function createBookDesc() {
 }
 
 function createMain() {
-  //   books = await fetch("../../books.json")
-  //     .then((response) => response.json())
-  //     .then((response) => response);
   const main = createElement("main");
   addClass(main, "main");
 
@@ -601,7 +572,6 @@ function createMain() {
   mainContent.append(ul);
   container.append(mainAside);
   container.append(mainContent);
-  console.log(main);
   return main;
 }
 
@@ -749,24 +719,14 @@ function createForm() {
 
   const formFlat = createElement("input");
   addClass(formFlat, "delivery-flat__input");
-  formFlat.setAttribute("type", "number");
+  formFlat.setAttribute("type", "tel");
   formFlat.setAttribute("id", "flat");
   formFlat.setAttribute("name", "flat");
   formFlat.setAttribute("placeholder", "Enter your flat number");
   formFlat.setAttribute("required", "true");
-  formFlat.setAttribute("min", 0);
+  formFlat.setAttribute("min", 1);
   formFlat.addEventListener("focusout", (e) => {
-    if (e.target.value === "") {
-      e.target.closest(".delivery-item").classList.remove("valid");
-      e.target.closest(".delivery-item").classList.add("error");
-    } else {
-      e.target.closest(".delivery-item").classList.add("valid");
-      e.target.closest(".delivery-item").classList.remove("error");
-    }
-    changeSubmitBtnState();
-  });
-  formFlat.addEventListener("keyup", (e) => {
-    if (e.target.value === "") {
+    if (e.target.value[0] == '-' || e.target.value == '') {
       e.target.closest(".delivery-item").classList.remove("valid");
       e.target.closest(".delivery-item").classList.add("error");
     } else {
@@ -818,7 +778,7 @@ function createForm() {
   addClass(submitBtn, "delivery-submit");
   submitBtn.setAttribute("type", "submit");
   submitBtn.setAttribute("disabled", "true");
-  submitBtn.textContent = "Submit"; //createSumInfo
+  submitBtn.textContent = "Submit"; 
   submitBtn.addEventListener('click', createSumInfo)
 
   form.append(closeBtn);
@@ -893,7 +853,6 @@ function createCartMain(arr) {
 
   const ul = createElement("ul");
   addClass(ul, "cart-main__list");
-  console.log("arr", arr);
   // ============================
   if (arr) {
     for (let i = 0; i < arr.length; i++) {
@@ -963,4 +922,3 @@ function createHtmlStructure() {
   wrapper.append(fragment);
 }
 
-// createHtmlStructure();
