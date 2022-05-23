@@ -40,29 +40,36 @@ const asideCategoriesList_2 = [
 ];
 
 // === helper functions
-function validDate() {
+function validDate(e) {
+  const elem = e.target;
+  if (!elem.value) {
+    e.target.closest(".delivery-item").classList.add("error");
+  } else {
+    e.target.closest(".delivery-item").classList.remove("error");
+  }
+}
+function nextDate() {
   const today = new Date();
-  console.log('today',today)
-  const tomorrow =  new Date()
-  tomorrow.setDate(today.getDate() + 1)
-  tomorrow.toISOString().split('T')[0]
-  return tomorrow.toISOString().split('T')[0];
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  tomorrow.toISOString().split("T")[0];
+  return tomorrow.toISOString().split("T")[0];
 }
 
 function stringOnly(e) {
-  if(!/[a-z]/i.test(e.key)) {
+  if (!/[a-z]/i.test(e.key)) {
     e.preventDefault();
   }
 }
 
 function validCharAmount(e, num) {
   const length = e.target.value.length;
-  console.log('length', length)
-  if(length < num) {
-    console.log('length < num', length < num)
-    e.target.closest('.delivery-item').classList.add('error');
+  const elem = e.target;
+  if (length < num || elem === "") {
+    console.log("length < num", length < num);
+    e.target.closest(".delivery-item").classList.add("error");
   } else {
-    e.target.closest('.delivery-item').classList.remove('error');
+    e.target.closest(".delivery-item").classList.remove("error");
   }
 }
 
@@ -155,8 +162,8 @@ function showDescription(e) {
 }
 
 function showForm() {
-  if(purchases.length != 0) {
-    const form = document.querySelector(".delivery"); 
+  if (purchases.length != 0) {
+    const form = document.querySelector(".delivery");
     const overlay = document.querySelector(".overlay");
     overlay.classList.add("show");
     form.classList.add("show");
@@ -564,7 +571,7 @@ createMain(books);
 function createForm() {
   const form = createElement("form");
   addClass(form, "delivery");
-  form.setAttribute('action', '#')
+  form.setAttribute("action", "#");
 
   const closeBtn = createElement("button");
   addClass(closeBtn, "delivery-close");
@@ -578,54 +585,59 @@ function createForm() {
 
   const formName = createElement("input");
   addClass(formName, "delivery-name__input");
-  formName.setAttribute('type', 'text');
-  formName.setAttribute('id', 'name');
-  formName.setAttribute('name', 'name');
-  formName.setAttribute('placeholder', 'Enter your name');
-  formName.setAttribute('required', 'true');
-  formName.addEventListener('keydown', stringOnly)
-  formName.addEventListener('keyup', (e) => {
-    validCharAmount(e,4)
-  })
+  formName.setAttribute("type", "text");
+  formName.setAttribute("id", "name");
+  formName.setAttribute("name", "name");
+  formName.setAttribute("placeholder", "Enter your name");
+  formName.setAttribute("required", "true");
+  formName.addEventListener("keydown", stringOnly);
+  formName.addEventListener("keyup", (e) => {
+    validCharAmount(e, 4);
+  });
+  formName.addEventListener("focusout", (e) => {
+    validCharAmount(e, 4);
+  });
   formNameContainer.append(formName);
 
   const formSurnameContainer = createElement("div");
   addClass(formSurnameContainer, "delivery-surname");
   addClass(formSurnameContainer, "delivery-item");
-  
 
   const formSurname = createElement("input");
   addClass(formSurname, "delivery-surname__input");
-  formSurname.setAttribute('type', 'text');
-  formSurname.setAttribute('id', 'surname');
-  formSurname.setAttribute('name', 'surname');
-  formSurname.setAttribute('placeholder', 'Enter your surname');
-  formSurname.setAttribute('required', 'true');
-  formSurname.addEventListener('keydown', stringOnly)
-  formSurname.addEventListener('keyup', (e) => {
-    validCharAmount(e,5)
-  })
-  
+  formSurname.setAttribute("type", "text");
+  formSurname.setAttribute("id", "surname");
+  formSurname.setAttribute("name", "surname");
+  formSurname.setAttribute("placeholder", "Enter your surname");
+  formSurname.setAttribute("required", "true");
+  formSurname.addEventListener("keydown", stringOnly);
+  formSurname.addEventListener("keyup", (e) => {
+    validCharAmount(e, 5);
+  });
+  formSurname.addEventListener("focusout", (e) => {
+    validCharAmount(e, 5);
+  });
+
   formSurnameContainer.append(formSurname);
 
-  
   const formDateContainer = createElement("div");
   addClass(formDateContainer, "delivery-date");
   addClass(formDateContainer, "delivery-item");
 
-
   const formDateLabel = createElement("label");
   addClass(formDateLabel, "delivery-date__label");
-  formDateLabel.setAttribute('for', 'date');
-  formDateLabel.textContent = 'Delivery date';
+  formDateLabel.setAttribute("for", "date");
+  formDateLabel.textContent = "Delivery date";
 
   const formDate = createElement("input");
   addClass(formDate, "delivery-date__input");
-  formDate.setAttribute('type', 'date');
-  formDate.setAttribute('id', 'date');
-  formDate.setAttribute('name', 'date');
-  formDate.setAttribute('required', 'true');
-  formDate.setAttribute('min', validDate());
+  formDate.setAttribute("type", "date");
+  formDate.setAttribute("id", "date");
+  formDate.setAttribute("name", "date");
+  formDate.setAttribute("required", "true");
+  formDate.setAttribute("min", nextDate());
+  formDate.addEventListener("focusout", validDate);
+  formDate.addEventListener("change", validDate);
   formDateContainer.append(formDateLabel);
   formDateContainer.append(formDate);
 
@@ -635,14 +647,17 @@ function createForm() {
 
   const formStreet = createElement("input");
   addClass(formStreet, "delivery-street__input");
-  formStreet.setAttribute('type', 'text');
-  formStreet.setAttribute('id', 'street');
-  formStreet.setAttribute('name', 'street');
-  formStreet.setAttribute('placeholder', 'Enter your street');
-  formStreet.setAttribute('required', 'true');
-  formStreet.addEventListener('keyup', (e) => {
-    validCharAmount(e,5)
-  })
+  formStreet.setAttribute("type", "text");
+  formStreet.setAttribute("id", "street");
+  formStreet.setAttribute("name", "street");
+  formStreet.setAttribute("placeholder", "Enter your street");
+  formStreet.setAttribute("required", "true");
+  formStreet.addEventListener("keyup", (e) => {
+    validCharAmount(e, 5);
+  });
+  formStreet.addEventListener("focusout", (e) => {
+    validCharAmount(e, 5);
+  });
 
   formStreetContainer.append(formStreet);
 
@@ -652,17 +667,34 @@ function createForm() {
 
   const formHouse = createElement("input");
   addClass(formHouse, "delivery-house__input");
-  formHouse.setAttribute('type', 'number');
-  formHouse.setAttribute('id', 'house');
-  formHouse.setAttribute('name', 'house');
-  formHouse.setAttribute('placeholder', 'Enter your house number');
-  formHouse.setAttribute('required', 'true');
-  formHouse.setAttribute('min', 0);
-  formHouse.addEventListener('keydown', (e) => {
-    if(!(e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode == 8 || e.keyCode == 46)) {
+  formHouse.setAttribute("type", "number");
+  formHouse.setAttribute("id", "house");
+  formHouse.setAttribute("name", "house");
+  formHouse.setAttribute("placeholder", "Enter your house number");
+  formHouse.setAttribute("required", "true");
+  formHouse.setAttribute("min", 0);
+  formHouse.addEventListener("keydown", (e) => {
+    if (
+      !(
+        (e.keyCode >= 48 && e.keyCode <= 57) ||
+        e.keyCode == 8 ||
+        e.keyCode == 46
+      )
+    ) {
       e.preventDefault();
+    } else if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.add("error");
+    } else {
+      e.target.closest(".delivery-item").classList.remove("error");
     }
-  })
+  });
+  formHouse.addEventListener("focusout", (e) => {
+    if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.add("error");
+    } else {
+      e.target.closest(".delivery-item").classList.remove("error");
+    }
+  });
   formHouseContainer.append(formHouse);
 
   const formFlatContainer = createElement("div");
@@ -671,52 +703,66 @@ function createForm() {
 
   const formFlat = createElement("input");
   addClass(formFlat, "delivery-flat__input");
-  formFlat.setAttribute('type', 'number');
-  formFlat.setAttribute('id', 'flat');
-  formFlat.setAttribute('name', 'flat');
-  formFlat.setAttribute('placeholder', 'Enter your flat number');
-  formFlat.setAttribute('required', 'true');
-  formFlat.setAttribute('min', 0);
+  formFlat.setAttribute("type", "number");
+  formFlat.setAttribute("id", "flat");
+  formFlat.setAttribute("name", "flat");
+  formFlat.setAttribute("placeholder", "Enter your flat number");
+  formFlat.setAttribute("required", "true");
+  formFlat.setAttribute("min", 0);
+  formFlat.addEventListener("focusout", (e) => {
+    if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.add("error");
+    } else {
+      e.target.closest(".delivery-item").classList.remove("error");
+    }
+  });
+  formFlat.addEventListener("keyup", (e) => {
+    if (e.target.value === "") {
+      e.target.closest(".delivery-item").classList.add("error");
+    } else {
+      e.target.closest(".delivery-item").classList.remove("error");
+    }
+  });
   formFlatContainer.append(formFlat);
 
   const formPaymentContainer = createElement("div");
   addClass(formPaymentContainer, "delivery-payment");
   addClass(formPaymentContainer, "delivery-item");
 
-
   const formPaymentCardLabel = createElement("label");
   addClass(formPaymentCardLabel, "delivery-payment__label");
-  formPaymentCardLabel.setAttribute('for', 'card');
-  formPaymentCardLabel.textContent = 'Card:';
+  formPaymentCardLabel.setAttribute("for", "card");
+  formPaymentCardLabel.textContent = "Card:";
 
   const formPaymentCard = createElement("input");
   addClass(formPaymentCard, "delivery-payment__input");
-  formPaymentCard.setAttribute('type', 'radio');
-  formPaymentCard.setAttribute('id', 'card');
-  formPaymentCard.setAttribute('name', 'payment');
-  formPaymentCard.setAttribute('required', 'true');
+  formPaymentCard.setAttribute("type", "radio");
+  formPaymentCard.setAttribute("id", "card");
+  formPaymentCard.setAttribute("name", "payment");
+  formPaymentCard.setAttribute("required", "true");
+  formPaymentCard.setAttribute("checked", "true");
 
   const formPaymentCashLabel = createElement("label");
   addClass(formPaymentCashLabel, "delivery-payment__label");
-  formPaymentCashLabel.setAttribute('for', 'cash');
-  formPaymentCashLabel.textContent = 'Cash:';
+  formPaymentCashLabel.setAttribute("for", "cash");
+  formPaymentCashLabel.textContent = "Cash:";
 
   const formPaymentCash = createElement("input");
   addClass(formPaymentCash, "delivery-payment__input");
-  formPaymentCash.setAttribute('type', 'radio');
-  formPaymentCash.setAttribute('id', 'cash');
-  formPaymentCash.setAttribute('name', 'payment');
-  formPaymentCash.setAttribute('required', 'true');
+  formPaymentCash.setAttribute("type", "radio");
+  formPaymentCash.setAttribute("id", "cash");
+  formPaymentCash.setAttribute("name", "payment");
+  formPaymentCash.setAttribute("required", "true");
   formPaymentContainer.append(formPaymentCardLabel);
   formPaymentContainer.append(formPaymentCard);
   formPaymentContainer.append(formPaymentCashLabel);
   formPaymentContainer.append(formPaymentCash);
 
   const submitBtn = createElement("button");
-  addClass(submitBtn, 'delivery-submit');
-  submitBtn.setAttribute('type', 'submit')
-  submitBtn.setAttribute('disabled', 'true')
-  submitBtn.textContent = 'Submit';
+  addClass(submitBtn, "delivery-submit");
+  submitBtn.setAttribute("type", "submit");
+  submitBtn.setAttribute("disabled", "true");
+  submitBtn.textContent = "Submit";
 
   form.append(closeBtn);
   form.append(formNameContainer);
@@ -729,14 +775,14 @@ function createForm() {
   form.append(submitBtn);
 
   return form;
-
 }
 
 {
   /* <form class="delivery" action="#" method="get">
   
   <button type="submit">Complete</button>
-</form>; */}
+</form>; */
+}
 
 // ======== Basket ======
 function createCardItemBasket(

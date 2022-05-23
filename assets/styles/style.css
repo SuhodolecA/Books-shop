@@ -383,6 +383,11 @@ body {
     position: relative;
 }
 
+.delivery-item input {
+    border: 1px solid transparent;
+    transition: border .2s ease-in-out;
+}
+
 .delivery-item:after {
     content: 'The field is invalid';
     position: absolute;
@@ -396,6 +401,10 @@ body {
 
 .delivery-item.error:after {
     color: hsl(0, 100%, 50%);
+}
+
+.delivery-item.error  input {
+    border-color: red;
 }
 
 .delivery-house__input::-webkit-inner-spin-button,
