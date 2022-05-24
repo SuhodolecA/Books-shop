@@ -10,7 +10,8 @@ let books = fetch("../../books.json")
     createHtmlStructure();
     cartSumItem = document.querySelector(".header-main__basket-cost__input");
   });
-const purchases = [];
+  
+let purchases = [];
 let cartSum = purchases.reduce((acc, item) => acc + item.price, 0) || 0;
 const headerMenuLinks = ["Sign in", "My Account", "Order Status", "Help"];
 const asideCategoriesList_3 = ["Science", "Sex", "Baby", "Sports", "Travel"];
@@ -134,6 +135,17 @@ function addToCart(e) {
   }
 }
 
+function removeItem(e) {
+  // const id = e.target.closest(".main-content__books-item").dataset.bookId;
+  // console.log('id', e.target.parentNode = "")
+  const parent = e.target.parentNode;
+  const title = parent.querySelector('.cart-main__list__item-title-link').textContent;
+
+  purchases = purchases.filter(item => !(item.title == title));
+  cartSum = purchases.reduce((acc, item) => acc + item.price, 0);
+  createHtmlCardStructure()
+}
+
 function createElement(name) {
   const element = document.createElement(name);
   return element;
@@ -180,6 +192,7 @@ function showForm() {
     const form = document.querySelector(".delivery");
     const overlay = document.querySelector(".overlay");
     overlay.classList.add("show");
+    overlay.addEventListener('click', closeForm);
     form.classList.add("show");
   }
 }
@@ -817,6 +830,7 @@ function createCardItemBasket(
   const button = createElement("button");
   addClass(button, classNameBtn);
   button.textContent = btnText;
+  button.addEventListener('click', removeItem);
 
   const h4 = createElement("h4");
   addClass(h4, h4_class);
@@ -920,5 +934,7 @@ function createHtmlStructure() {
   fragment.appendChild(createFooter());
   wrapper.innerHTML = "";
   wrapper.append(fragment);
+  // updateCartCounter();
+  // updateCartSum();
 }
 
